@@ -12,12 +12,12 @@ class player
 	std::vector<card> returnHand;
 	int remainingCards;
 	
+	void moveDeck(); //moves returnHand to playHand. helper ONLY
+	
 	public:
 	card playCard();//returns top of player's playHand
 	
 	void returnCard(card, bool)//takes the card won and a boolean for top(true) or bottom of returnHand (face down deck)
-	
-	void moveDeck(); //moves returnHand to playHand
 	
 	void addCard(card&); //adds passed card reference to playHand(for dealing)
 	
