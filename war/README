@@ -1,0 +1,20 @@
+Nick Beule
+
+War
+
+(It's not great as far as the graphics go bc I made everything before trying to learn and impliment them. but I get it now)
+
+The card class: has specific values enumerated for suit and rank allowed that be assigned via custom ctr. these values cannot be
+		changed once the card is constructed, and can only be accesed with provided getters.
+
+The deck class: features a custom constructor that creates a deck based on whether or not to use jokers, and whether ace is high or low
+		the deck is stored as a vector of cards that can be shuffled
+		
+
+The player class: utilizes 2 vectors of cards for play hand and return hand. it gives the player the option to return their won card to 
+		  the top or bottom of their return hand. the class has an int value that will only be changed by member functions (no function
+		  assigned specifically to it). if 0, the player has no remaining cards. the move deck function is a helper and shouldn't be used
+		  directly.
+
+The game class: has 2 players and a deck. the game mechanics are run when a game obj is created and .playGamed. the deal
+		function is used by .playGame only.
