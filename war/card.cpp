@@ -1,24 +1,14 @@
 #include "card.h"
 
-card::card(int rankIndex, int suitIndex)
+Rank card::getSuit()const
 {
-	Rank rankValues[15] = {AceLow, Two, Three, Four, Five, Six, Seven, Eight, Nine,
-							Ten, Jack, Queen, King, AceHigh, Joker};
-	
-	Suit suitValues[5] = {Hearts, Diamonds, Clubs, Spades, No_Type};
-	
-	rank = rankValues[rankIndex];
-	suit = suitValues[suitIndex];
+	unsigned char suitOnly = static_cast <unsigned char> (cardData >> 4);//cut off bits representing rank in cardData, and shifts suit bits right, where they can be interpreted as int 	
+	return suitOnly;
 }
 
-Rank card::getRank()const
+Suit card::getRank()const
 {
-	return rank;
-}
-
-Suit card::getSuit()const
-{
-	return suit;
+	return static_cast <int> (cardData & 0xf;);//use bitwise and to get last 4 bits of cardData with 1111 (15 or hex f) 
 }
 
 Sprite card::getSprite()const
@@ -29,3 +19,34 @@ Sprite card::getSprite()const
 	
 	//etc
 }
+
+bool card::operator<(Card a, Card b)
+{
+  if (a.get_suit() < b.get_suit())
+  {
+    return true;
+  }
+ else
+  if (b.get_suit() <= a.get_suit())
+  {
+    return false;
+  }
+}
+
+bool card::operator>(Card a, Card b)
+{
+  return b < a;
+}
+
+bool card::operator==(Card a, Card b)
+{
+  return a.get_rank() == b.get_rank() &&
+         a.get_suit() == b.get_suit();
+}
+
+bool card::operator!=(Card a, Card b)
+{
+  return !(a == b);
+}
+
+
