@@ -16,12 +16,12 @@ class war
 	player Player_1;
 	player Player_2;
 	
-	vector<card>inPlayCards;
-	
-	void deal();//called from playGame ONLY
+	vector<PlayingCard>inPlayCards;
 	
 	public:
 	int playGame(bool);//call from main to start and play game. accepts bool for ace high card(true) or low card
+	
+	void deal();//called from ^^
 	
 	~game();
 };
