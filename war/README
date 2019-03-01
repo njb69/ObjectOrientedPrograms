@@ -2,8 +2,6 @@ Nick Beule
 
 Game of War
 
-(It's not great as far as the graphics go bc I made everything before trying to learn and impliment them. but I get it now)
-
 The card class: has specific values enumerated for suit and rank allowed that be assigned via custom ctr. these values cannot be
 		changed once the card is constructed, and can only be accesed with provided getters.
 
