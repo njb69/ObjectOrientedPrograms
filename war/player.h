@@ -8,18 +8,18 @@
 class player
 {
 	private:
-	std::vector<card> playHand;
-	std::vector<card> returnHand;
+	std::vector<PlayingCard> playHand;
+	std::vector<PlayingCard> returnHand;
 	int remainingCards;
 	
-	void moveDeck(); //moves returnHand to playHand. helper ONLY
-	
 	public:
-	card playCard();//returns top of player's playHand
+	PlayingCard playCard();//returns top of player's playHand
 	
-	void returnCard(card, bool)//takes the card won and a boolean for top(true) or bottom of returnHand (face down deck)
+	void returnCard(PlayingCard, bool)//takes the card won and a boolean for top(true) or bottom of returnHand (face down deck)
 	
-	void addCard(card&); //adds passed card reference to playHand(for dealing)
+	void moveDeck(); //moves returnHand to playHand
+	
+	void addCard(PlayingCard&); //adds passed card reference to playHand(for dealing)
 	
 	int getNumRemainingCards()const;
 	
