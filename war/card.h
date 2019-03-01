@@ -7,7 +7,6 @@
 //tagged union
 
 using sf::Sprite;
-using std::
 
 enum Rank
 {
