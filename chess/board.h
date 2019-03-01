@@ -1,3 +1,6 @@
+#ifndef CARD_H
+#def CARD_H
+
 #include <iostream>
 #include "square.h"
 
@@ -31,3 +34,4 @@ public:
 										//if invalid destination recursive call till one is given
 };
 
+#endif
