@@ -1,3 +1,6 @@
+#ifndef CARD_H
+#def CARD_H
+
 enum pieceType
 {
 	none,
@@ -49,3 +52,5 @@ private:
 		
 	void clear();
 };
+
+#endif
