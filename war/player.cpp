@@ -1,10 +1,10 @@
 #include "player.h"
 
-card player::playCard()
+PlayingCard player::playCard()
 {
 	if(playHand.size() != 0)//out of cards in both hands should be handled using remainingCards value in player obj
 	{
-		card temp = playHand.front();
+		PlayingCard temp = playHand.front();
 		
 		playHand.erase(playHand.front());//remove card and memory
 		
@@ -28,7 +28,7 @@ card player::playCard()
 	}
 }
 
-void player::returnCard(card wonCard, bool putOnTop)
+void player::returnCard(PlayingCard wonCard, bool putOnTop)
 {
 	if(putOnTop)
 	{
@@ -78,6 +78,3 @@ int player::getNumRemainingCards()const
 {
 	return remainingCards;
 }
-	
-		
-		
