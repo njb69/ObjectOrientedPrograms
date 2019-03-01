@@ -4,7 +4,10 @@
 #include<iostream>
 #include <SFML/Graphics.hpp>
 
+//tagged union
+
 using sf::Sprite;
+using std::
 
 enum Rank
 {
@@ -22,7 +25,6 @@ enum Rank
 	Queen,//11
 	King,//12
 	AceHigh, //used if ace is high 13
-	Joker,//14
 };
 
 enum Suit
@@ -31,16 +33,23 @@ enum Suit
 	Diamonds,
 	Clubs,
 	Spades,
-	No_Type,
 };
 
-class card
+enum Color
+{
+	Red,
+	Black,
+};
+
+///////////////////////////////////////////////
+
+class normalCard
 {
 	private:
 	unsigned char cardData;//8 bit storage for the card's suit and rank
 	
 	public:
-	card(Rank r, Suit s)//constructor: accepts int as index for Rank and int as index for Suit and makes card with cooresponding values
+	normalCard(Rank r, Suit s)//constructor: accepts int as index for Rank and int as index for Suit and makes card with cooresponding values
 		:cardData(static_cast<unsigned char>(s) << 4 | static_cast<unsigned char>(r))
 		{}//cardData now contains a bit pattern of ssssrrrr. we're currently only using 2 bits for suit but we have 4 available
 	
@@ -48,11 +57,102 @@ class card
 	Suit getSuit()const;
 	Sprite getSprite()const;
 	~card();
-	
-	bool operator<(Card a, Card b);
-	bool operator>(Card a, Card b);
-	bool operator==(Card a, Card b);
-	bool operator!=(Card a, Card b);
 };
+
+/////////////////////////////////////////////
+
+class jokerCard
+{
+public:
+  jokerCard(Color c)
+    : color(c)
+  { }
+
+  Color get_color() const { return color; }
+
+private:
+  Color color;
+};
+
+///////////////////////////////////////////
+
+union PlayingCardData
+{
+  PlayingCardData(Rank r, Suit s)
+    : sc(r, s)
+  { }
+
+  PlayingCardData(Color c)
+    : jc(c)
+  { }
+
+  normalCard sc;
+  jokerCard jc;
+};
+
+//////////////////////////////////////////
+
+enum PlayingCardKind
+{
+  Standard,
+  Joker,
+};
+
+///////////////////////////////////////
+
+class PlayingCard
+{
+private:
+  PlayingCardKind tag;
+  PlayingCardData data;
+  
+public:
+  PlayingCard(Rank r, Suit s)
+    : tag(Standard), data(r, s)
+  { }
+
+  PlayingCard(Color c)
+    : tag(Joker), data(c)
+  { }
+
+  bool is_standard() const { 
+    return tag == Standard;
+  }
+
+  bool is_joker() const { 
+    return tag == Joker;
+  }
+
+  StandardCard get_as_standard() const {
+    assert(is_standard());
+    return data.sc;
+  }
+
+  Rank get_rank() const {
+    assert(is_standard());
+    return data.sc.get_rank();
+  }
+
+  Suit get_suit() const { 
+    assert(is_standard());
+    return data.sc.get_suit();
+  }
+
+  JokerCard get_as_joker() const {
+    assert(is_joker());
+    return data.jc;
+  }
+
+  Color get_color() const { 
+    assert(is_joker());
+    return data.jc.get_color();
+  }
+  
+    bool operator<(PlayingCard, PlayingCardCard);
+	bool operator>(PlayingCardCard, PlayingCardCard);
+	bool operator==(PlayingCardCard, PlayingCardCard);
+	bool operator!=(PlayingCardCard, PlayingCardCard);
+};
+
 
 #endif
