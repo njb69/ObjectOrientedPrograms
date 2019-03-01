@@ -3,7 +3,7 @@
 deck::deck(bool aceHigh, bool joker)
 {
 	
-	std::vector<card>theDeck(54);//we're making room for jokers but may not use 
+	std::vector<PlayingCard>theDeck(54);//we're making room for jokers but may not use 
 	
 	int index = 0;
 	int i = 1;
@@ -12,7 +12,7 @@ deck::deck(bool aceHigh, bool joker)
 		int j = 0;
 		while(j < 4)//four types
 		{
-			card tempCard(i, j);
+			PlayingCard tempCard(i, j);
 			theDeck[index] = tempCard;
 			index++;
 			j++;
@@ -24,9 +24,10 @@ deck::deck(bool aceHigh, bool joker)
 	
 	if(joker)
 	{
-		card joker(14, 4);
+		PlayingCard redJoker(Red);
 		theDeck[deckIndex] = joker;
 		deckIndex++;
+		PlayingCard blackJoker(Black);
 		theDeck[deckIndex] = joker;
 		deckIndex++;
 	}
@@ -38,7 +39,7 @@ deck::deck(bool aceHigh, bool joker)
 		
 		while(suitCt < 4)
 		{
-			card highAce(13, suitCt);
+			PlayingCard highAce(13, suitCt);
 			theDeck[deckIndex] = highAce;
 			
 			deckIndex++;
@@ -51,7 +52,7 @@ deck::deck(bool aceHigh, bool joker)
 		
 		while(suitCt < 4)
 		{
-			card lowAce(0, suitCt);
+			PlayingCard lowAce(0, suitCt);
 			theDeck[deckIndex] = highAce;
 			
 			deckIndex++;
@@ -67,7 +68,7 @@ void deck::shuffle()
 	std::shuffle(std::begin(theDeck), std::end(theDeck), rng);
 }
 
-card& deck::getCard(int index)
+PlayingCard& deck::getCard(int index)
 {
 	return theDeck[index];
 }
