@@ -53,3 +53,67 @@ bool PlayingCard::operator!=(PlayingCard a, PlayingCardCard b)
 {
   return !(a == b);
 }
+
+
+std::ostream&
+operator<<(std::ostream& os, Suit s)
+{
+  switch (s) {
+  case Clubs: return os << "C";
+  case Spades: return os << "S";
+  case Hearts: return os << "H";
+  case Diamonds: return os << "D";
+  }
+}
+
+
+std::ostream&
+operator<<(std::ostream& os, Rank r)
+{
+  switch (r) {
+  case Ace: return os << "A";
+  case Two: return os << "2";
+  case Three: return os << "3";
+  case Four: return os << "4";
+  case Five: return os << "5";
+  case Six: return os << "6";
+  case Seven: return os << "7";
+  case Eight: return os << "8";
+  case Nine: return os << "9";
+  case Ten: return os << "T";
+  case Jack: return os << "J";
+  case Queen: return os << "Q";
+  case King: return os << "K";
+  }
+}
+
+
+std::ostream& operator<<(ostream& os, JokerCard const& joker)
+{
+	switch (joker.get_color())
+	{
+		case Red:
+			return os << "Red";
+		case Black:
+			return os << "Black";
+	}
+}
+
+
+std::ostream& operator<<(ostream& os, standardCard const& sc)
+{
+	return os << sc.getRank() << sc.getSuit();
+}
+
+
+std::ostream& operator<<(ostream& os, PlayingCard const& pc)
+{
+	if(pc.is_standard)
+	{
+		return os << static_cast<standardCard const&>(pc);
+	}
+	else
+	{
+		return os << static_cast<jokerCard const&>(pc);
+	}
+}
