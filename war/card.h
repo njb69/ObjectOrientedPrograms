@@ -7,6 +7,7 @@
 //tagged union
 
 using sf::Sprite;
+using std::
 
 enum Rank
 {
@@ -42,13 +43,13 @@ enum Color
 
 ///////////////////////////////////////////////
 
-class normalCard
+class standardCard : PlayingCard
 {
 	private:
 	unsigned char cardData;//8 bit storage for the card's suit and rank
 	
 	public:
-	normalCard(Rank r, Suit s)//constructor: accepts int as index for Rank and int as index for Suit and makes card with cooresponding values
+	standardCard(Rank r, Suit s)//constructor: accepts int as index for Rank and int as index for Suit and makes card with cooresponding values
 		:cardData(static_cast<unsigned char>(s) << 4 | static_cast<unsigned char>(r))
 		{}//cardData now contains a bit pattern of ssssrrrr. we're currently only using 2 bits for suit but we have 4 available
 	
@@ -60,7 +61,7 @@ class normalCard
 
 /////////////////////////////////////////////
 
-class jokerCard
+class jokerCard : PlayingCard
 {
 public:
   jokerCard(Color c)
@@ -71,22 +72,6 @@ public:
 
 private:
   Color color;
-};
-
-///////////////////////////////////////////
-
-union PlayingCardData
-{
-  PlayingCardData(Rank r, Suit s)
-    : sc(r, s)
-  { }
-
-  PlayingCardData(Color c)
-    : jc(c)
-  { }
-
-  normalCard sc;
-  jokerCard jc;
 };
 
 //////////////////////////////////////////
@@ -103,7 +88,6 @@ class PlayingCard
 {
 private:
   PlayingCardKind tag;
-  PlayingCardData data;
   
 public:
   PlayingCard(Rank r, Suit s)
@@ -151,6 +135,11 @@ public:
 	bool operator>(PlayingCardCard, PlayingCardCard);
 	bool operator==(PlayingCardCard, PlayingCardCard);
 	bool operator!=(PlayingCardCard, PlayingCardCard);
+	
+	std::ostream& operator<<(ostream&, JokerCard const&);
+	std::ostream& operator<<(ostream&, StandardCard const&);
+	std::ostream& operator<<(ostream&, PlayingCard const&);
+	
 };
 
 
