@@ -29,63 +29,62 @@ board::board()
 	{
 		for(int j = 2; j < 5; j++)
 		{
-			boardOfSquares[i][j].setPiece(none, none, j, i);
+			boardOfSquares[i][j].setPiece(noType, noColor, j, i);
 		}
 	}
 }
 
-square* board::validateMove(square* to)const
+square* board::validateMove(square* from, square* to)const
 {
-	if((to->getX() <= 7) && (to->getY() <= 7) && (to->getColor() != this->getColor())
+	if((from->getColor() != noColor) && (to->getX() <= 7) && (to->getY() <= 7) && (to->getColor() != from->getColor()))
 	{
 		return to;
 	}
 	else
-	{
-		square* newSpace;
-		
-		cout << "thats not good" << endl;
-		cin >> newSpace;
-		
-		validateMove(newSpace);
-	}
-}	
+	{}
+}
 
-void board::pawnMove(square* from, square* to)
+
+
+square& board::getSquare(int x, int y) //needs validate move
+{	
+	x--;
+	y--;
+	
+	return this->boardOfSquares[x][y];;
+}
+
+	
+
+short int board::pawnMove(square* from, square* to)
 {
-	validateMove(to);
+	//validateMove(to);
 	
 	short int fromX = from->getX();
 	short int fromY = from->getY();
 	short int toX = to->getX();
 	short int toY = to->getY();
 	
-	if((fromX == toX) && (fromY == toY + 1) && to->getType() == none)
+	if((fromX == toX) && (fromY == toY + 1) && to->getType() == noType)//move up if no take
 	{
-		from->setSquare(to);
-		
-		from->clear();
+		from->captureCard(to);
+		return from->captureSquare(to);
 	}
 	else
-	if(((fromX == toX + 1)||(fromX == toX - 1)) && (fromY == toY + 1) && to->getType() != none)
+	if(((fromX == toX + 1)||(fromX == toX - 1)) && (fromY == toY + 1) && to->getType() != noType)//move diagonal if take
 	{
-		from->setSquare(to);
-		
-		from->clear();
+		from->captureCard(to);
+		return from->captureSquare(to);
 	}
 	else
 	{
-		square* newDestiny;
-		cout<<"bad move"<<endl;
-		cin >> newDestiny;
-		
-		this->pawnMove(from, newDestiny);
+		return 3;
 	}
 }
 
-void board::rookMove(square* from, square* to)
+short int board::rookMove(square* from, square* to)
 {
-	validateMove(to);
+	//validateMove(to);
 	
 	short int fromX = from->getX();
 	short int fromY = from->getY();
@@ -94,23 +93,16 @@ void board::rookMove(square* from, square* to)
 	
 	if( ((fromX == toX) && (fromY != toY)) || ((fromX != toX) && (fromY == toY)) )
 	{
-		from->setSquare(to);
-			
-		from->clear();
+		from->captureCard(to);
+		return from->captureSquare(to);
 	}
 	else
-	{
-		square* newDestiny;
-		cout<<"bad move"<<endl;
-		cin >> newDestiny;
-		
-		this->rookMove(from, newDestiny);
-	}		
+	{return 3;}		
 }
 
-void board::bishopMove(square* from, square* to)
+short int board::bishopMove(square* from, square* to)
 {
-	validateMove(to);
+	//validateMove(to);
 	
 	short int rise = from->getY() - to->getY();
 	short int run = from->getX() - to->getX();
@@ -119,24 +111,17 @@ void board::bishopMove(square* from, square* to)
 	
 	if(slope == 1 || slope == -1)
 	{
-		from->setSquare(to);
-			
-		from->clear();
+		from->captureCard(to);
+		return from->captureSquare(to);
 	}
 	else
-	{
-		square* newDestiny;
-		cout<<"bad move"<<endl;
-		cin >> newDestiny;
-		
-		this->bishopMove(from, newDestiny);
-	}		
+	{return 3;}		
 }
 
 
-void knightMove(square* from, square* to)
+short int board::knightMove(square* from, square* to)
 {
-	validateMove(to);
+	//validateMove(to);
 	
 	short int rise = from->getY() - to->getY();
 	short int run = from->getX() - to->getX();
@@ -145,55 +130,45 @@ void knightMove(square* from, square* to)
 	
 	if( (slope == 1/2) || (slope == -1/2) || (slope == 2) || (slope == -2) )
 	{
-		from->setSquare(to);
-			
-		from->clear();
+		from->captureCard(to);
+		return from->captureSquare(to);
 	}
 	else
-	{
-		square* newDestiny;
-		cout<<"bad move"<<endl;
-		cin >> newDestiny;
-		
-		this->knightMove(from, newDestiny);
-	}
+	{return 3;}
 }	
 
-void board::queenMove(square* from, square* to)
+short int board::queenMove(square* from, square* to)
 {
-	validateMove(to);
+	//validateMove(to);
 	
 	short int fromX = from->getX();
 	short int fromY = from->getY();
 	short int toX = to->getX();
 	short int toY = to->getY();
 	
+	short int rise = from->getY() - to->getY();
+	short int run = from->getX() - to->getX();
+	
+	double slope = rise / run;
+	
 	if( ((fromX == toX) && (fromY != toY)) || ((fromX != toX) && (fromY == toY)) )//horizontal or vertical
 	{
-		from->setSquare(to);
-			
-		from->clear();
+		from->captureCard(to);
+		return from->captureSquare(to);
 	}
 	else
 	if(slope == 1 || slope == -1)//diagonal
 	{
-		from->setSquare(to);
-		
-		from->clear();
+		from->captureCard(to);
+		return from->captureSquare(to);
 	}
 	else
-	{
-		square* newDestiny;
-		cout<<"bad move"<<endl;
-		cin >> newDestiny;
-		
-		this->queenMove(from, newDestiny);
-	}		
+	{return 3;}		
 }
 
-void board::kingMove(square* from, square* to)
+short int board::kingMove(square* from, square* to)
 {
-	validateMove(to);
+	//validateMove(to);
 	
 	short int rise = from->getY() - to->getY();
 	short int run = from->getX() - to->getX();
@@ -203,16 +178,9 @@ void board::kingMove(square* from, square* to)
 	
 	if( rise == 1 || run == 1 )//front, back, left, right, diagonal
 	{
-		from->setSquare(to);
-		
-		from->clear();
+		from->captureCard(to);
+		return from->captureSquare(to);
 	}
 	else
-	{
-		square* newDestiny;
-		cout<<"bad move"<<endl;
-		cin >> newDestiny;
-		
-		this->kingMove(from, newDestiny);
-	}	
+	{return 3;}	
 }
