@@ -1,8 +1,9 @@
-#ifndef CARD_H
-#def CARD_H
+#ifndef BOARD_H
+#define BOARD_H
 
 #include <iostream>
 #include "square.h"
+#include "card.h"
 
 class board
 {
@@ -14,23 +15,26 @@ private:
 public:
 	board();//creates board with pieces in initial positions
 	
-	void pawnMove(square*, square*);//accepts the square object the pawn occupies and the square obj of its destination
+	short int pawnMove(square*, square*);//accepts the square object the pawn occupies and the square obj of its destination
 	
-	void rookMove(square*, square*);
+	short int rookMove(square*, square*);
 	
-	void bishopMove(square*, square*);
+	short int bishopMove(square*, square*);
 	
-	void knightMove(square*, square*);
+	short int knightMove(square*, square*);
 	
-	void queenMove(square*, square*);
+	short int queenMove(square*, square*);
 	
-	void kingMove(square*, square*);
+	short int kingMove(square*, square*);
+	
+	square& getSquare(int, int);//returns pointer to the square at the input x,y BOARD POSITION (not index) square has no assignment overload so accidental 
+								//assignment = error
 	
 	short int getNumWhite()const;
 	
 	short int getNumBlack()const;
 	
-	square* validateMove(square*)const;//called from a piece move to make sure the destination is on the board, and a friendly isn't there 
+	square* validateMove(square*, square*)const;//called from a board space to make sure the destination is on the board, a friendly isn't there, and there's a piece @ the move from position
 										//if invalid destination recursive call till one is given
 };
 
