@@ -1,56 +1,74 @@
-#ifndef CARD_H
-#def CARD_H
+#ifndef SQUARE_H
+#define SQUARE_H
+
+#include "card.h"
+#include "player.h"
+#include "playersNamespace.h"
+
+namespace staticObjects
+{
+	static const standardCard valuelessCard(NoRank, NoSuit);
+}
 
 enum pieceType
-{
-	none,
-	rook,
-	knight,
-	bishop,
-	queen,
-	king,
-	pawn,
-};
+	{
+		noType,
+		ROOK,
+		KNIGHT,
+		BISHOP,
+		QUEEN,
+		KING,
+		PAWN,
+	};
 
 enum pieceColor
-{
-	none,
-	black,
-	white,
-};
-
+	{
+		noColor,
+		BLACK,
+		WHITE,
+	};
+	
 class square
 {
-public:
+private:
 	pieceType type;
 	pieceColor color;
+	standardCard card;
 	int xPos;//relative to white side bottom left = 0
 	int yPos;
 
-private:
-	square(pieceType a, pieceColor b)
-		:type(a), color(b)
+public:
+	square(pieceType a = noType, pieceColor b = noColor, standardCard c = staticObjects::valuelessCard, int x = -1, int y = -1)
+		:type(a), color(b), xPos(x), yPos(y)
 		{}
 	
-	pieceType getType()const;
+	pieceType getType()const
+		{return type;}
 	
-	pieceColor getColor()const;
+	pieceColor getColor()const
+		{return color;}
+		
+	standardCard getCard()//allows for capture and removal of a pieces card
+		{return card;}
+		
+	void setType(pieceType t)
+		{type = t;}
+		
+	void setColor(pieceColor c)
+		{color = c;}
 	
-	void setPiece(pieceType, pieceColor, int x, int y);
+	void setPiece(pieceType, pieceColor, int x, int y);//initialize the position (x and y) and piece attributes on an existing piece
+														//DONT USE AFTER BOARD HAS BEEN ASSEMBLED
 	
-	void setSquare(square*, square*);
+	short int captureSquare(square*);//accepts pointer to square to capture (empty or occupied) and sets it's piece values (x and y dont change) to that of the  
+								//square the function is called from, also clears the piece data of the calling square {ultimately the piece has moved to the pointer's square}
 	
-	void setX(int);
-	
-	void setY(int);
+	void captureCard(square*);//returns the card obtained from taking an opponents piece
 	
 	int getX()const
-		return xPos;
+		{return xPos;}
 	
 	int getY()const
-		return yPos;
-		
-	void clear();
+		{return yPos;}
 };
-
 #endif
