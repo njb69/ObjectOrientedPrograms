@@ -1,4 +1,4 @@
-PROJECT MILESTONE 3
+PROJECT MILESTONE 4
 
 I got the program to compile and play chess
 
