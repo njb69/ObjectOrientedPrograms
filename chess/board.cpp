@@ -18,18 +18,18 @@ board::board()
 	boardOfSquares[5][7].setPiece(BISHOP, BLACK, 5, 7);
 	boardOfSquares[6][7].setPiece(KNIGHT, BLACK, 6, 7);
 	boardOfSquares[7][7].setPiece(ROOK, BLACK, 7, 7);
-	
+
 	for(int i = 0; i < 7; i++)
 	{
 		boardOfSquares[i][1].setPiece(PAWN, WHITE, i, 1);
 		boardOfSquares[i][6].setPiece(PAWN, BLACK, i, 6);
 	}
-	
+
 	for(int i = 0; i < 7; i++)
 	{
 		for(int j = 2; j < 5; j++)
 		{
-			boardOfSquares[i][j].setPiece(noType, noColor, j, i);
+			boardOfSquares[i][j].setPiece(noType, noColor, i, j);
 		}
 	}
 }
@@ -46,88 +46,92 @@ square* board::validateMove(square* from, square* to)const
 
 
 
-square& board::getSquare(int x, int y) //needs validate move
-{	
+square& board::getSquare(int x, int y)
+{
 	x--;
 	y--;
-	
+
 	return this->boardOfSquares[x][y];;
 }
 
-	
+
 
 short int board::pawnMove(square* from, square* to)
 {
 	//validateMove(to);
-	
+
 	short int fromX = from->getX();
 	short int fromY = from->getY();
 	short int toX = to->getX();
 	short int toY = to->getY();
-	
-	if((fromX == toX) && (fromY == toY + 1) && to->getType() == noType)//move up if no take
+
+	std::cout<<fromX<<toX<<fromY<<toY<<std::endl;
+
+	if((fromX == toX) && (fromY == toY + 1) && (to->getType() == noType))//move up if no take
+	{
+		std::cout<<"good Move\n";
+		from->captureCard(to);
+		return from->captureSquare(to);
+	}
+	else
+	if(((fromX == toX + 1)||(fromX == toX - 1)) && (fromY == toY + 1) && to->getColor() != BLACK)//move diagonal if take
 	{
 		from->captureCard(to);
 		return from->captureSquare(to);
 	}
 	else
-	if(((fromX == toX + 1)||(fromX == toX - 1)) && (fromY == toY + 1) && to->getType() != noType)//move diagonal if take
 	{
-		from->captureCard(to);
-		return from->captureSquare(to);
-	}
-	else
-	{
-		return 3;
+		std::cout<<"bad\n";
+		return 3;//signal invalid move
 	}
 }
 
 short int board::rookMove(square* from, square* to)
 {
 	//validateMove(to);
-	
+
 	short int fromX = from->getX();
 	short int fromY = from->getY();
 	short int toX = to->getX();
 	short int toY = to->getY();
-	
+
 	if( ((fromX == toX) && (fromY != toY)) || ((fromX != toX) && (fromY == toY)) )
 	{
 		from->captureCard(to);
 		return from->captureSquare(to);
 	}
 	else
-	{return 3;}		
+	{return 3;}
 }
 
 short int board::bishopMove(square* from, square* to)
 {
 	//validateMove(to);
-	
+
 	short int rise = from->getY() - to->getY();
 	short int run = from->getX() - to->getX();
-	
-	int slope = rise / run;//slope of bishop move should be 1 or -1 
-	
+
+	int slope = rise / run;//slope of bishop move should be 1 or -1
+
 	if(slope == 1 || slope == -1)
 	{
 		from->captureCard(to);
 		return from->captureSquare(to);
 	}
 	else
-	{return 3;}		
+	{return 3;}
 }
 
 
 short int board::knightMove(square* from, square* to)
 {
 	//validateMove(to);
-	
+
 	short int rise = from->getY() - to->getY();
 	short int run = from->getX() - to->getX();
-	
-	double slope = rise / run;//slope of knight move should be 1/2 or -1/2 or 2 or -2 
-	
+
+	double slope = rise / run;//slope of knight move should be 1/2 or -1/2 or 2 or -2
+
 	if( (slope == 1/2) || (slope == -1/2) || (slope == 2) || (slope == -2) )
 	{
 		from->captureCard(to);
@@ -135,22 +139,22 @@ short int board::knightMove(square* from, square* to)
 	}
 	else
 	{return 3;}
-}	
+}
 
 short int board::queenMove(square* from, square* to)
 {
 	//validateMove(to);
-	
+
 	short int fromX = from->getX();
 	short int fromY = from->getY();
 	short int toX = to->getX();
 	short int toY = to->getY();
-	
+
 	short int rise = from->getY() - to->getY();
 	short int run = from->getX() - to->getX();
-	
+
 	double slope = rise / run;
-	
+
 	if( ((fromX == toX) && (fromY != toY)) || ((fromX != toX) && (fromY == toY)) )//horizontal or vertical
 	{
 		from->captureCard(to);
@@ -163,24 +167,25 @@ short int board::queenMove(square* from, square* to)
 		return from->captureSquare(to);
 	}
 	else
-	{return 3;}		
+	{return 3;}
 }
 
 short int board::kingMove(square* from, square* to)
 {
 	//validateMove(to);
-	
+
 	short int rise = from->getY() - to->getY();
 	short int run = from->getX() - to->getX();
-	
+
 	rise *= rise;
 	run *= run;
-	
+
 	if( rise == 1 || run == 1 )//front, back, left, right, diagonal
 	{
 		from->captureCard(to);
 		return from->captureSquare(to);
 	}
 	else
-	{return 3;}	
+	{return 3;}
 }
+
