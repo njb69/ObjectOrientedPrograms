@@ -1,74 +1,65 @@
-#ifndef SQUARE_H
-#define SQUARE_H
+#ifndef CARD_H
+#define CARD_H
 
-#include "card.h"
-#include "player.h"
-#include "playersNamespace.h"
+#include<iostream>
 
-namespace staticObjects
+enum Rank
 {
-	static const standardCard valuelessCard(NoRank, NoSuit);
-}
+	Ace, //used if ace is low  0
+	Two,//1
+	Three,//2
+	Four,//3
+	Five,//4
+	Six,//5
+	Seven,//6
+	Eight,//7
+	Nine,//8
+	Ten,//9
+	Jack,//10
+	Queen,//11
+	King,//12
+	NoRank,
+};
 
-enum pieceType
-	{
-		noType,
-		ROOK,
-		KNIGHT,
-		BISHOP,
-		QUEEN,
-		KING,
-		PAWN,
-	};
+enum Suit
+{
+	Black,
+	White,
+	NoSuit,
+};
 
-enum pieceColor
-	{
-		noColor,
-		BLACK,
-		WHITE,
-	};
+///////////////////////////////////////////////
+
+class standardCard
+{
+	private:
+	Rank rank;
+	Suit suit;
 	
-class square
-{
-private:
-	pieceType type;
-	pieceColor color;
-	standardCard card;
-	int xPos;//relative to white side bottom left = 0
-	int yPos;
-
-public:
-	square(pieceType a = noType, pieceColor b = noColor, standardCard c = staticObjects::valuelessCard, int x = -1, int y = -1)
-		:type(a), color(b), xPos(x), yPos(y)
+	public:
+	standardCard() {};
+	
+	standardCard(Rank r, Suit s)//constructor: accepts int as index for Rank and int as index for Suit and makes card with cooresponding values
+		:rank(r), suit(s)
 		{}
 	
-	pieceType getType()const
-		{return type;}
+	Rank getRank()const;
+	Suit getSuit()const;
 	
-	pieceColor getColor()const
-		{return color;}
-		
-	standardCard getCard()//allows for capture and removal of a pieces card
-		{return card;}
-		
-	void setType(pieceType t)
-		{type = t;}
-		
-	void setColor(pieceColor c)
-		{color = c;}
+	void setCard(Rank r, Suit s)//sets card values DONT USE OUTSIDE OF BOARD CONSTRUCTION
+		{rank = r; suit = s;}
 	
-	void setPiece(pieceType, pieceColor, int x, int y);//initialize the position (x and y) and piece attributes on an existing piece
-														//DONT USE AFTER BOARD HAS BEEN ASSEMBLED
+	bool operator<(standardCard);
+	bool operator>(standardCard);
+	bool operator==(standardCard);
+	bool operator!=(standardCard);
 	
-	short int captureSquare(square*);//accepts pointer to square to capture (empty or occupied) and sets it's piece values (x and y dont change) to that of the  
-								//square the function is called from, also clears the piece data of the calling square {ultimately the piece has moved to the pointer's square}
-	
-	void captureCard(square*);//returns the card obtained from taking an opponents piece
-	
-	int getX()const
-		{return xPos;}
-	
-	int getY()const
-		{return yPos;}
+	standardCard& operator=(standardCard); //assignment operator overload 
 };
+
+/////////////////////////////////////////////
+
+
+
+
 #endif
